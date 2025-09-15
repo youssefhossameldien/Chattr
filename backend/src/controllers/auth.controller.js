@@ -22,10 +22,15 @@ export const signup = async (req, res) => {
 
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
-    const newUser = new User({ email, password: hashedPassword, name });
+    const newUser = new User({
+      email: email.trim(),
+      password: hashedPassword,
+      name: name.trim(),
+    });
     if (newUser) {
-      generateToken(newUser._id, res);
-      await newUser.save();
+      const savedUser = await newUser.save();
+      generateToken(savedUser._id, res);
+
       res.status(201).json({
         _id: newUser._id,
         name: newUser.name,
