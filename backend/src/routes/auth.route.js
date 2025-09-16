@@ -6,7 +6,9 @@ import {
   updateProfile,
 } from "../controllers/auth.controller.js";
 import { protectRoute } from "../middleware/auth.midleware.js";
+import { arcjetProtection } from "../middleware/arcjet.middleware.js";
 const router = express.Router();
+router.use(arcjetProtection); /// should be commented in development , as it blocks postman
 router.post("/signup", signup);
 router.post("/signin", signin);
 router.post("/signout", signout);
